@@ -193,5 +193,5 @@ function followLinks($url)
     }
 }
 
-$startUrl = "https://www.bbc.com/";
+$startUrl = "https://www.apple.com/";
 followLinks($startUrl);
