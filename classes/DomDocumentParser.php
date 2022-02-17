@@ -15,11 +15,32 @@ class DomDocumentParser
 
         $this->doc = new DomDocument();
 
-        @$this->doc->loadHTML(file_get_contents($url, false, $context));
+        // @$this->doc->loadHTML(file_get_contents($url, false, $context));
+
+        $contents = file_get_contents($url, false, $context);
+        if($contents) {
+            $this->doc->loadHTML($contents);
+        }
     }
 
     public function getLinks()
     {
         return $this->doc->getElementsByTagName("a");
     }
+
+    public function getTitleTags()
+    {
+        return $this->doc->getElementsByTagName("title");
+    }
+
+    public function getMetaTags()
+    {
+        return $this->doc->getElementsByTagName("meta");
+    }
+
+    public function getImages()
+    {
+        return $this->doc->getElementsByTagName("img");
+    }
+
 }
