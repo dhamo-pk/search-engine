@@ -14,10 +14,10 @@ class SiteResultsProvider
     {
         $query = $this->con->prepare(
             "SELECT COUNT(*) as total
-                                         FROM sites WHERE title LIKE :term 
-                                         OR url LIKE :term
-                                         OR keywords LIKE :term
-                                         OR description LIKE :term"
+            FROM sites WHERE title LIKE :term 
+            OR url LIKE :term
+            OR keywords LIKE :term
+            OR description LIKE :term"
         );
 
         $searchTerm = "% . $term . %";
@@ -69,7 +69,7 @@ class SiteResultsProvider
 
             $resultsHtml .= "<div class='resultsContainer'>
                                 <h3 class='title'>
-                                    <a class='result' href='$url'>
+                                    <a class='result' href='$url' data-linkid='$id'>
                                         $title
                                     </a>
                                 </h3>
