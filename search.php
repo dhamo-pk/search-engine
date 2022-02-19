@@ -32,7 +32,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "sites";
                 <div class="searchContainer">
                     <form action="search.php" method="GET">
                         <div class="searchBarContainer">
-                            <input type="text" class="searchBox" name="term">
+                            <input type="text" class="searchBox" name="term" value="<?php echo $term ?>">
                             <button class="searchButton">
 
                                 <img src="assets/images/icons/search.png">
@@ -64,6 +64,8 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "sites";
 
                 echo "<p class = 'resultsCount'> $numResults results found</p>";
 
+                echo $resultsProvider-> getResultsHtml(1, 20, $term);
+                // echo "<div class = 'siteResults"> $resultsProvider; "</div>";
             ?>
 
         </div>
@@ -72,4 +74,3 @@ $type = isset($_GET["type"]) ? $_GET["type"] : "sites";
 </body>
 
 </html>
-?>
