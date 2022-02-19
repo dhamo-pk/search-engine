@@ -205,3 +205,34 @@ border-bottom: 3px solid #1A73E8;
     color: #998855;
     font-size: 12px;
 }
+
+.paginationContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.pageButtons {
+    display: flex;
+}
+
+.pageNumberContainer img{
+    height: 37px;
+}
+
+.pageNumberContainer,
+.pageNumberContainer a {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+}
+
+.pageNumber {
+    color: #000;
+    font-size: 13px;
+}
+
+a .pageNumber {
+    color: #4285f4;
+}
