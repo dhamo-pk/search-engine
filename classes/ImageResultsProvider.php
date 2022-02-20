@@ -1,6 +1,6 @@
 <?php
 
-class SiteResultsProvider
+class ImageResultsProvider
 {
 
     private $con;
@@ -14,10 +14,10 @@ class SiteResultsProvider
     {
         $query = $this->con->prepare(
             "SELECT COUNT(*) as total
-            FROM sites WHERE title LIKE :term 
-            OR url LIKE :term
-            OR keywords LIKE :term
-            OR description LIKE :term"
+            FROM images 
+            WHERE (title LIKE :term
+            OR alt LIKE :term)
+            AND broken=0"
         );
 
         $searchTerm = "% . $term . %";
@@ -40,11 +40,11 @@ class SiteResultsProvider
 
         $fromLimit = ($page - 1) * 20;
         $query = $this->con->prepare(
-            "SELECT *
-            FROM sites WHERE title LIKE :term 
-            OR url LIKE :term
-            OR keywords LIKE :term
-            OR description LIKE :term
+            "SELECT *  
+            FROM images 
+            WHERE (title LIKE :term
+            OR alt LIKE :term)
+            AND broken=0
             ORDER BY clicks DESC
             LIMIT :fromLimit, :pageSize"
         );
@@ -55,37 +55,39 @@ class SiteResultsProvider
         $query->bindParam(":pageSize", $pageSize, PDO::PARAM_INT);
         $query->execute();
 
-        $resultsHtml = "<div class='siteResults'>";
+        $resultsHtml = "<div class='imageResults'>";
 
         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
             $id = $row["id"];
+            $imageUrl = $row["imageUrl"];
+            $siteUrl = $row["siteUrl"];
             $title = $row["title"];
-            $url = $row["url"];
-            $description = $row["description"];
+            $alt = $row["alt"];
 
+            if ($title) {
+                $displayText = $title;
+            } else if ($alt) {
+                $displayText = $alt;
+            } else {
+                $displayText = $imageUrl;
+            }
 
-            $title = $this->trimField($title, 55);
-            $description = $this->trimField($description, 230);
+            $resultsHtml .= "<div class='gridItem'>
+                                <a href='$imageUrl'>
+                                <script>
+                                    $(document).ready(function() { 
+                                        loadImage(\"$imageUrl\", \"$displayText\");
 
-            $resultsHtml .= "<div class='resultsContainer'>
-                                <h3 class='title'>
-                                    <a class='result' href='$url' data-linkid='$id'>
-                                        $title
-                                    </a>
-                                </h3>
-                                <span class='url'>$url</span>
-                                <span class='description'>$description</span>
+                                    })
+                                </script>    
+                                <img src='$imageUrl' title='$displayText' alt='$displayText'>
+                                    <span class='details'>$displayText</span>
+                                </a>
                             </div>";
         }
 
         $resultsHtml .= "</div>";
 
         return $resultsHtml;
-    }
-
-    private function trimField($string, $characterLimit)
-    {
-        $dots = strlen($string) > $characterLimit ? "..." : "";
-        return substr($string, 0, $characterLimit) . $dots;
     }
 }

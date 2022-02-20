@@ -1,6 +1,8 @@
 <?php
 include("config.php");
 include("classes/SiteResultsProvider.php");
+include("classes/ImageResultsProvider.php");
+
 if (isset($_GET["term"])) {
     $term = $_GET["term"];
 } else {
@@ -15,6 +17,7 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
 <head>
     <title> Dummearch - Search Results </title>
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -29,6 +32,7 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
                 <div class="searchContainer">
                     <form action="search.php" method="GET">
                         <div class="searchBarContainer">
+                            <input type="hidden" name="type" value="<?php echo $type; ?>">
                             <input type="text" class="searchBox" name="term" value="<?php echo $term ?>">
                             <button class="searchButton">
                                 <img src="assets/images/icons/search.png">
@@ -54,8 +58,14 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
         </div>
         <div class="mainResultsSection">
             <?php
-            $resultsProvider = new SiteResultsProvider($con);
-            $pageSize = 20;
+            if($type=="sites") {
+                $resultsProvider = new SiteResultsProvider($con);
+                $pageSize = 20;
+            } else {
+                $resultsProvider = new ImageResultsProvider($con);
+                $pageSize = 30;
+            }
+           
             $numResults = $resultsProvider->getNumResults($term);
             echo "<p class = 'resultsCount'> $numResults results found</p>";
             echo $resultsProvider->getResultsHtml($page, $pageSize, $term);
@@ -103,6 +113,8 @@ $page = isset($_GET["page"]) ? $_GET["page"] : 1;
             </div>
         </div>
     </div>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script type="text/javascript" src="assets/js/script.js"></script>
 </body>
 
 </html>

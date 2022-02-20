@@ -236,3 +236,35 @@ border-bottom: 3px solid #1A73E8;
 a .pageNumber {
     color: #4285f4;
 }
+
+.mainResultsSection .imageResults {
+    margin: 20px;
+}
+
+.gridItem {
+    position: relative;
+}
+
+.gridItem:hover .details{
+    visibility: visible;
+}
+
+.gridItem img {
+    min-width: 200px;
+    min-width: 50px;
+}
+
+.gridItem .details {
+    visibility: hidden;
+    position: absolute;
+    bottom: 0px;
+    left : 0px;
+    width: 100%;
+    overflow: hidden;
+    background-color: rgba(0,0,0,0.8);
+    color: fff;
+    font-size: 11px;
+    padding: 3px;
+    box-sizing: border-box;
+    word-spacing: nowrap;
+}
